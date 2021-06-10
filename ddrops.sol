@@ -678,7 +678,7 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
     ) external;
 }
 
-contract DopPhaseOne is Context, Ownable, IERC20  {
+contract Ddrops is Context, Ownable, IERC20  {
     
     using SafeMath for uint256;
     using Address for address;
@@ -688,8 +688,8 @@ contract DopPhaseOne is Context, Ownable, IERC20  {
     mapping (address => bool) private _isExcludedFromFee;
     
     uint private _totalSupply = 3375 * 10 ** 5 * 10 ** 9;
-    string private _name = "DopPhaseOne";
-    string private _symbol = "DOPPO";
+    string private _name = "Ddrops";
+    string private _symbol = "DOP";
     uint8 private _decimals = 9;
     
     receive () external payable {}
