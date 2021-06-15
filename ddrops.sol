@@ -697,7 +697,7 @@ contract Ddrops is Context, Ownable, IERC20  {
     uint public contributionFee;
     uint private _previousContributionFee = contributionFee;
     
-    uint public _maxTrxAmount =  _totalSupply * 3 / 10;
+    uint public _maxTrxAmount =  _totalSupply * 4 / 10;
     uint private _amountToLiquify = 1 * 10 ** 5 * 10 ** 9;
     
     address public treasureWalletAddress;
@@ -711,7 +711,7 @@ contract Ddrops is Context, Ownable, IERC20  {
 
     event SwapAndLiquifiedUpdate (bool value);
     
-    function isswapEnabled() public view returns (bool){
+    function isSwapEnabled() public view returns (bool){
         return swapAndLiquifyEnabled;
     }
     
@@ -894,19 +894,19 @@ contract Ddrops is Context, Ownable, IERC20  {
     }
     
     function swapAndLiquify(uint256 contractTokenBalance) private noReEntry {
-        // capture the contract's current ETH balance.
-        // this is so that we can capture exactly the amount of ETH that the
-        // swap creates, and not make the liquidity event include any ETH that
+        // capture the contract's current BNB balance.
+        // this is so that we can capture exactly the amount of BNB that the
+        // swap creates, and not make the liquidity event include any BNB that
         // has been manually sent to the contract
         uint256 initialBalance = address(this).balance;
 
         // here we swap DOP for BNB
-        swapTokensForBnb(contractTokenBalance); // <- this breaks the ETH -> HATE swap when swap+liquify is triggered
+        swapTokensForBnb(contractTokenBalance); // <- this breaks the BNB -> HATE swap when swap+liquify is triggered
 
         // how much BNB did we just swap into?
         uint256 newBalance = address(this).balance.sub(initialBalance);
         
-        //here we share the fee between the two wallets, treasureWallet = 3%, developementWallet = 2% of a total of 5% fee which results into a 60/40 ratio;
+        //here we share the fee between the two wallets, treasureWallet = 3%, developementWallet = 2% from a total of 5% fee which results into a 60/40 ratio;
         uint256 _developementWalletAmount = newBalance.div(100).mul(40);
         uint256 _treasureWalletAmount = newBalance.div(100).mul(60);
         
@@ -917,7 +917,7 @@ contract Ddrops is Context, Ownable, IERC20  {
     
     //This function swaps DOP for BNB
     function swapTokensForBnb(uint256 tokenAmount) private{
-        // generate the uniswap pair path of token -> weth
+        // generate the uniswap pair path of token -> wbnb
         address[] memory path = new address[](2);
         path[0] = address(this);
         path[1] = uniswapV2Router.WETH();
@@ -960,10 +960,6 @@ contract Ddrops is Context, Ownable, IERC20  {
         // solhint-disable-next-line avoid-low-level-calls, avoid-call-value
         (bool success, ) = recipient.call{ value: amount }("");
         require(success, "Address: unable to send value, recipient may have reverted");
-    }
-    
-     function getBnbbalance() public view returns (uint){
-        return address(this).balance;
     }
     
 }
