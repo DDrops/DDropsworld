@@ -697,7 +697,7 @@ contract Ddrops is Context, Ownable, IERC20  {
     uint public contributionFee;
     uint private _previousContributionFee = contributionFee;
     
-    uint public _maxTrxAmount =  _totalSupply * 4 / 10;
+    uint public _maxTrxAmount =  _totalSupply;
     uint private _amountToLiquify = 1 * 10 ** 5 * 10 ** 9;
     
     address public treasureWalletAddress;
